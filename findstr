@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ -n "$1" ]; then
+  grep -inR "$1" ./;
+else
+  echo "No string specified!";
+fi
+

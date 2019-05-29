@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ -n "$1" ]; then
+  sudo find / -iname "$1";
+else
+  echo "No file specified!";
+fi
+
