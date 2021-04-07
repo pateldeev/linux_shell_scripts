@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Constants --------
+REDIRECT_PATH="/home/dp/Downloads/cpp/main"
+LOG_BASE_PATH="/home/dp/Downloads/replace"
+REDIRECT_OUT=true
+
+LOG_EXTENSION=".log"
+LOG_LN_SEP="||||||||||||||||||||||||||||||||||||||||||"
+# ------------------
+
+
+DATE=$(date)
+DATE_HASH=$(cksum <<< $DATE | cut -f 1 -d ' ')
+
+LOG_FILE_ALL="${LOG_BASE_PATH}${LOG_EXTENSION}"
+LOG_FILE_SPECIFIC="${LOG_BASE_PATH}_${DATE_HASH}${LOG_EXTENSION}"
+
+
+echo "" >> $LOG_FILE_ALL
+echo $LOG_LN_SEP >> $LOG_FILE_ALL
+echo "CALL DATE: ${DATE} (${DATE_HASH})" >> $LOG_FILE_ALL
+echo "CALL CMD: ${REDIRECT_PATH} $@" >> $LOG_FILE_ALL
+echo "CALL LOG: ${LOG_FILE_SPECIFIC}" >> $LOG_FILE_ALL
+echo $LOG_LN_SEP >> $LOG_FILE_ALL
+
+
+echo "DATE START: ${DATE}" >> $LOG_FILE_SPECIFIC
+echo $LOG_LN_SEP >> $LOG_FILE_SPECIFIC
+
+if [ "$REDIRECT_OUT" = true ]; then
+  $REDIRECT_PATH "$@" 2>&1 | tee -a $LOG_FILE_SPECIFIC
+else
+  $REDIRECT_PATH "$@"
+fi
+
+DATE=$(date)
+echo $LOG_LN_SEP >> $LOG_FILE_SPECIFIC
+echo "DATE END: ${DATE}" >> $LOG_FILE_SPECIFIC
+
+
